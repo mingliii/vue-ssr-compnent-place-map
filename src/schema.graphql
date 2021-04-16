@@ -1,0 +1,123 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+}
+
+type DayOpeningStatus {
+    date: Date
+    openingTimeStatus: OpeningTimeStatus
+}
+
+type Link {
+    caption: String
+    credit: String
+    description: String
+    href: Url
+    rel: String
+}
+
+type Location {
+    latitude: BigDecimal
+    longitude: BigDecimal
+}
+
+type PlaceSummary {
+    cmsRegion: String
+    county: String
+    dayOpeningStatus: [DayOpeningStatus]
+    description: String
+    id: SummaryId
+    imageDescription: String
+    imageUrl: Url
+    links: [Link]
+    location: Location
+    publicationChannels: [ActivelyPromoted]
+    subTitle: String
+    tagRefs: [String]
+    title: String
+    town: String
+    type: String
+    websiteUrl: Url
+}
+
+type PlaceSummaryWithActivities {
+    activityTagRefs: [String]
+    cmsRegion: String
+    county: String
+    dayOpeningStatus: [DayOpeningStatus]
+    description: String
+    id: SummaryId
+    imageDescription: String
+    imageUrl: Url
+    links: [Link]
+    location: Location
+    publicationChannels: [ActivelyPromoted]
+    subTitle: String
+    tagRefs: [String]
+    title: String
+    town: String
+    type: String
+    websiteUrl: Url
+}
+
+type Query {
+    allPlaces(publicationChannel: ActivelyPromoted): [PlaceSummaryWithActivities]
+    placesByIds(ids: [String]!): [PlaceSummary]
+    searchForPlaces(query: SearchForPlacesQuery!): [Summary]
+}
+
+type Summary {
+    county: String
+    description: String
+    id: SummaryId
+    links: [Link]
+    location: Location
+    tagRefs: [String]
+    title: String
+    town: String
+    type: String
+}
+
+type SummaryId {
+    value: String
+}
+
+enum ActivelyPromoted {
+    NATIONAL_TRUST_MOBILE_APPLICATION
+    NATIONAL_TRUST_ORG_UK
+}
+
+enum OpeningTimeStatus {
+    CLOSED
+    FULLY_OPEN
+    PARTIALLY_OPEN
+}
+
+input SearchForPlacesQuery {
+    lat: Float
+    lon: Float
+    maxLocationPageResults: Int
+    maxPlaceResults: Int
+    milesRadius: Float
+    openFromDate: Date
+    openToDate: Date
+    pageSize: Int
+    pageStartIndex: Int
+    placeSort: String
+    publicationChannel: ActivelyPromoted
+    query: String!
+    tagGroups: [TagGroup]
+}
+
+input TagGroup {
+    tagRefs: [String]
+}
+
+
+scalar Url
+
+scalar Date
+
+"Built-in java.math.BigDecimal"
+scalar BigDecimal
