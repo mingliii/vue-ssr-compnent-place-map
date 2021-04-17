@@ -3,7 +3,6 @@ const vueServerRenderer = require('vue-server-renderer');
 const fs = require('fs');
 const path = require('path');
 const proxy = require('express-http-proxy');
-const clientManifest = require('../dist/vue-ssr-client-manifest.json')
 const setupDevServer = require('../config/setup-dev-server');
 const port = 3000;
 const dev = process.env.NODE_ENV === 'development'
@@ -22,14 +21,13 @@ const createRenderer = (bundle, options) =>
   vueServerRenderer.createBundleRenderer(bundle, {
     runInNewContext: false,
     inject: false,
-    clientManifest,
     ...options
   });
 
 const requestHandler = async (req, res, serverBundle) => {
   try {
     const component = req.path.substring(1);
-    if (entries.includes(component)) {
+    if (!entries.includes(component)) {
       return res.status(404).send('404 | Page Not Found');
     }
 
@@ -37,15 +35,13 @@ const requestHandler = async (req, res, serverBundle) => {
     const bundle = {...serverBundle};
     let template = fs.readFileSync(path.resolve(process.cwd(), 'src', 'index.template.html'), 'utf-8');
 
-    if (req.url.includes('hello')) {
-      bundle.entry = `${component}.js`
-      context.contextKey = `state.${component}`
-      template = template.replace("<!--contextKey-->", "stateB").replace("<!--windowKey-->", "__INITIAL_STATE_B__")
-    } else {
-      template = template.replace("<!--contextKey-->", "state").replace("<!--windowKey-->", "__INITIAL_STATE__");
-    }
+    bundle.entry = `${component}.js`
+    context.contextKey = `state.${component}`
+    template = template.replace("<!--contextKey-->", `state.${component}`).replace("<!--windowKey-->", `__${component.toUpperCase()}_INITIAL_STATE__`)
 
-    const renderer = createRenderer(bundle, {template});
+    let clientManifest = {...require('../dist/vue-ssr-client-manifest.json')};
+    clientManifest.initial = [`${component}.js`];
+    const renderer = createRenderer(bundle, {template, clientManifest});
     const html = await renderer.renderToString(context);
     res.end(html);
   } catch (error) {

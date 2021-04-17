@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="place-component">
         <h1 class="about">{{ name }}</h1>
         <div>
             <card :place="places[Math.floor(Math.random() * places.length)]"/>

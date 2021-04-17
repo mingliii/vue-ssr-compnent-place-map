@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="places-component">
         <h1 class="about">{{ name }}</h1>
         <div>
             <c-simple-grid minChildWidth="250px" spacing="30px">

@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const {clients} = require('../src/entries');
 const merge = require('webpack-merge');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -8,12 +9,9 @@ const autoprefixer = require('autoprefixer');
 const base = require('./webpack.base.config');
 const VueSSRClientPlugin = require("vue-server-renderer/client-plugin");
 const isProduction = process.env.NODE_ENV === 'production';
-const srcPath = path.resolve(process.cwd(), 'src', 'entries');
 
 module.exports = merge(base, {
-  entry: {
-    places: path.join(srcPath, 'client', 'places.js'),
-  },
+  entry: clients,
   output: {
     path: path.resolve(process.cwd(), 'dist'),
     publicPath: '/public/',
