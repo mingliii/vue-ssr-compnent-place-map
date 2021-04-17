@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const {clients} = require('../src/entries');
 const merge = require('webpack-merge');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
 const base = require('./webpack.base.config');

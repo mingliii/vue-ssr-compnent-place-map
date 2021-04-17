@@ -31,9 +31,7 @@ const setupDevServer = (app, onServerBundleReady) => {
   // watch src files and rebuild SSR bundle
   global.console.log('Building SSR bundle...');
   const serverCompiler = webpack(serverConfig);
-  const mfs = new MFS();
-
-  serverCompiler.outputFileSystem = mfs;
+  serverCompiler.outputFileSystem = new MFS();
   serverCompiler.watch({}, (error, stats) => {
     if (error) throw error;
 

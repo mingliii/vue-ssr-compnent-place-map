@@ -16,7 +16,7 @@ exports.clients = {
 
 exports.createClientEntry = Component => {
   const {createApp} = require('../app')
-  const { app, store } = createApp(Component)
+  const {app, store} = createApp(Component)
 
   if (window[`__${Component.name.toUpperCase()}_INITIAL_STATE__`]) {
     // We initialize the store state with the data injected from the server

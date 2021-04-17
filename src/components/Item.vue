@@ -8,21 +8,21 @@
 export default {
     computed: {
         // display the item from store state.
-        item () {
+        item() {
             return this.$store.state.items[this.$route.params.id]
         }
     },
 
     // Server-side only
     // This will be called by the server renderer automatically
-    serverPrefetch () {
+    serverPrefetch() {
         // return the Promise from the action
         // so that the component waits before rendering
         return this.fetchItem()
     },
 
     // Client-side only
-    mounted () {
+    mounted() {
         // If we didn't already do it on the server
         // we fetch the item (will first show the loading text)
         if (!this.item) {
@@ -31,7 +31,7 @@ export default {
     },
 
     methods: {
-        fetchItem () {
+        fetchItem() {
             // return the Promise from the action
             return this.$store.dispatch('fetchItem', this.$route.params.id)
         }

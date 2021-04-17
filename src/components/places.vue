@@ -3,7 +3,7 @@
         <h1>{{ name }}</h1>
         <div>
             <c-simple-grid minChildWidth="250px" spacing="30px">
-                <card :key="place.id.value" v-for="place in this.places.slice(0,30)" :place="place"/>
+                <card v-for="place in this.places.slice(0,30)" :key="place.id.value" :place="place"/>
             </c-simple-grid>
         </div>
     </div>
@@ -12,7 +12,7 @@
 <script>
 import {CSimpleGrid} from '@chakra-ui/vue'
 import Card from './lib/card.vue'
-import { mapState } from 'vuex';
+import {mapState} from 'vuex';
 
 export default {
     name: 'Places',

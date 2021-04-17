@@ -2,20 +2,20 @@
     <div id="map-component" style="width: 100%;height: 900px;position: relative">
         <h1>{{ name }}</h1>
         <div>
-            <GmapMap id="places-map" style="height: 800px;width: 100%"
+            <GmapMap id="places-map" ref="mapRef"
                      :center="center"
                      :zoom="6"
-                     ref="mapRef"
+                     class="map"
                      map-type-id="roadmap"
-                     class="map">
+                     style="height: 800px;width: 100%">
                 <!-- google map types are roadmap, satellite, hybrid, terrain -->
                 <GmapMarker
-                    :key="index"
                     v-for="(place, index) in places"
-                    :position="{lng: place.location.longitude, lat: place.location.latitude}"
+                    :key="index"
                     :clickable="false"
                     :draggable="false"
                     :icon="{ url: markerIcon}"
+                    :position="{lng: place.location.longitude, lat: place.location.latitude}"
                 />
             </GmapMap>
         </div>
@@ -25,7 +25,7 @@
 
 <script>
 import markerIcon from '@/assets/marker.png'
-import { mapState } from 'vuex';
+import {mapState} from 'vuex';
 
 export default {
     name: 'Map',
