@@ -35,7 +35,11 @@ export function createStore() {
                           value
                       }
                       title
-                      imageUrl,
+                      imageUrl
+                      location {
+                          latitude
+                          longitude
+                      }
                       imageDescription
                       county
                       town

@@ -1,6 +1,6 @@
 <template>
     <div id="places-component">
-        <h1 class="about">{{ name }}</h1>
+        <h1>{{ name }}</h1>
         <div>
             <c-simple-grid minChildWidth="250px" spacing="30px">
                 <card :key="place.id.value" v-for="place in this.places.slice(0,30)" :place="place"/>

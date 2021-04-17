@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "build:client": "cross-env NODE_ENV=development webpack --config ./config/webpack.client.config.js --progress",
     "build:server": "cross-env NODE_ENV=development webpack --config ./config/webpack.server.config.js --progress",
+    "build": "npm run build:client && npm run build:server",
     "server:dev": "cross-env NODE_ENV=development nodemon ./src/server.js",
     "server:prod": "cross-env NODE_ENV=prodction nodemon ./src/server.js"
   },
@@ -26,7 +26,8 @@
     "apollo-link-http": "^1.5.17",
     "graphql-tag": "^2.11.0",
     "vue-apollo": "^3.0.7",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
