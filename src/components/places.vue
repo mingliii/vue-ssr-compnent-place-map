@@ -29,6 +29,11 @@ export default {
     },
     serverPrefetch() {
         return this.$store.dispatch('fetchPlaces');
+    },
+    created() {
+        if (this.places.length === 0) {
+            return this.$store.dispatch('fetchPlaces');
+        }
     }
 };
 </script>
