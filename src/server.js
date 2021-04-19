@@ -1,4 +1,5 @@
-const server = require('express')();
+const express = require('express');
+const server = express();
 const vueServerRenderer = require('vue-server-renderer');
 const fs = require('fs');
 const path = require('path');
@@ -41,7 +42,7 @@ const requestHandler = async (req, res, serverBundle) => {
     template = template.replace("<!--contextKey-->", `state.${component}`).replace("<!--windowKey-->", `__${component.toUpperCase()}_INITIAL_STATE__`)
 
     let clientManifest = {...require('../dist/vue-ssr-client-manifest.json')};
-    clientManifest.initial = [`${component}.js`];
+    clientManifest.initial = clientManifest.initial.filter(filename => filename.match(`^${component}(\\.[\\d\\w]+)?\\.js$`))
     const renderer = createRenderer(bundle, {template, clientManifest});
     const html = await renderer.renderToString(context);
     res.end(html);
@@ -53,19 +54,18 @@ const requestHandler = async (req, res, serverBundle) => {
     return res.status(500).send('500 | Internal Server Error');
   }
 }
+let bundle = require("../dist/vue-ssr-server-bundle.json");
 
 if (dev) {
   setupDevServer(server, (serverBundle) => {
-    server.get('*', (req, res) => {
-      return requestHandler(req, res, serverBundle);
-    })
+    bundle = serverBundle;
   });
-} else {
-  const bundle = require("../dist/vue-ssr-server-bundle.json");
-  server.get('*', async (req, res) => {
-    return requestHandler(req, res, {...bundle});
-  })
 }
+
+server.use('/public', express.static('dist'))
+server.get('*', (req, res) => {
+  return requestHandler(req, res, bundle);
+})
 
 server.listen(port, (err) => {
   if (err) {

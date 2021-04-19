@@ -5,11 +5,14 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "lint": "vue-cli-service lint",
-    "build:client": "cross-env NODE_ENV=development webpack --config ./config/webpack.client.config.js --progress",
-    "build:server": "cross-env NODE_ENV=development webpack --config ./config/webpack.server.config.js --progress",
-    "build": "npm run build:client && npm run build:server",
+    "build:client:dev": "cross-env NODE_ENV=development webpack --config ./config/webpack.client.config.js --progress",
+    "build:server:dev": "cross-env NODE_ENV=development webpack --config ./config/webpack.server.config.js --progress",
+    "build:client:prod": "cross-env NODE_ENV=production webpack --config ./config/webpack.client.config.js --progress",
+    "build:server:prod": "cross-env NODE_ENV=production webpack --config ./config/webpack.server.config.js --progress",
+    "build:dev": "cross-env NODE_ENV=development npm run build:client:dev && npm run build:server:dev",
+    "build:prod": "cross-env NODE_ENV=production npm run build:client:prod && npm run build:server:prod",
     "server:dev": "cross-env NODE_ENV=development nodemon ./src/server.js",
-    "server:prod": "cross-env NODE_ENV=prodction nodemon ./src/server.js"
+    "server:prod": "cross-env NODE_ENV=production node ./src/server.js"
   },
   "dependencies": {
     "@chakra-ui/vue": "^0.8.1",

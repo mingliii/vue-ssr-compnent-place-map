@@ -10,6 +10,22 @@ const VueSSRClientPlugin = require("vue-server-renderer/client-plugin");
 const {clients} = require("../src/entries/config");
 const isProduction = process.env.NODE_ENV === 'production';
 
+const cleanWebpackPlugin = new CleanWebpackPlugin({
+  // cleanAfterEveryBuildPatterns: ['!vue-ssr-server-bundle.json', '!vue-ssr-client-manifest.json'],
+  cleanOnceBeforeBuildPatterns: ['**/*', '!vue-ssr-client-manifest.json', '!vue-ssr-server-bundle.json']
+});
+const miniCssExtractPlugin = new MiniCssExtractPlugin({
+  filename: isProduction ? '[name].[contenthash].css' : '[name].css',
+  hmr: !isProduction,
+});
+
+const plugins = [
+  miniCssExtractPlugin,
+  !isProduction && new webpack.HotModuleReplacementPlugin(),
+  new VueSSRClientPlugin(),
+  cleanWebpackPlugin
+].filter(Boolean);
+
 module.exports = merge(base, {
   entry: clients,
   output: {
@@ -46,24 +62,5 @@ module.exports = merge(base, {
       },
     ]
   },
-
-  plugins: (isProduction ?
-      [
-        new MiniCssExtractPlugin({
-          filename: '[name].[contenthash].css',
-        }),
-        new VueSSRClientPlugin(),
-        new CleanWebpackPlugin({
-          cleanAfterEveryBuildPatterns: ['!vue-ssr-server-bundle.json'],
-          cleanOnceBeforeBuildPatterns: ['!vue-ssr-server-bundle.json']
-        })
-      ] : [
-        new MiniCssExtractPlugin({
-          filename: '[name].css',
-          hmr: true,
-        }),
-        new webpack.HotModuleReplacementPlugin(),
-        new VueSSRClientPlugin(),
-      ]
-  )
+  plugins
 });
