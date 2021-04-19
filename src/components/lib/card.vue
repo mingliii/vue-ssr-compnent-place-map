@@ -46,10 +46,11 @@
 import {CBadge, CBox, CIcon, CImage} from '@chakra-ui/vue';
 
 export default {
-    name: 'Example',
+    name: 'Card',
     components: {
         CBox, CBadge, CImage, CIcon
     },
+    serverCacheKey: props => props.place.id.value,
     props: {
         place: {
             type: Object,

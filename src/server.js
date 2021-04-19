@@ -5,9 +5,14 @@ const fs = require('fs');
 const path = require('path');
 const proxy = require('express-http-proxy');
 const setupDevServer = require('../config/setup-dev-server');
-const port = 3000;
+const LRU = require("lru-cache");
 const dev = process.env.NODE_ENV === 'development';
 const components = Object.keys(require('./entries/config').servers);
+const port = 3000;
+const microCache = new LRU({
+  max: 10000,
+  maxAge: 10000 // Important: entries expires after 1 second.
+})
 
 server.use('/graphql', proxy('https://www.nationaltrust.org.uk', {
   "proxyReqPathResolver"() {
@@ -23,11 +28,21 @@ const createRenderer = (bundle, options) =>
   vueServerRenderer.createBundleRenderer(bundle, {
     runInNewContext: false,
     inject: false,
+    cache: new LRU({
+      max: 10000,
+      maxAge: 10000
+    }),
     ...options
   });
 
 const requestHandler = async (req, res, serverBundle) => {
   try {
+
+    const hit = microCache.get(req.url)
+    if (hit) {
+      return res.end(hit)
+    }
+
     const component = req.path.substring(1);
     if (!components.includes(component)) {
       return res.status(404).send('404 | Page Not Found');
@@ -46,6 +61,7 @@ const requestHandler = async (req, res, serverBundle) => {
     const renderer = createRenderer(bundle, {template, clientManifest});
     const html = await renderer.renderToString(context);
     res.end(html);
+    microCache.set(req.url, html)
   } catch (error) {
     console.error(error)
     if (error.code === 404) {
