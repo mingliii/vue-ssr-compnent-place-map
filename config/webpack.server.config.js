@@ -1,11 +1,10 @@
-const {servers} = require('../src/entries');
 const nodeExternals = require('webpack-node-externals');
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 const path = require('path');
 const merge = require('webpack-merge');
-
 const base = require('./webpack.base.config');
 const isProduction = process.env.NODE_ENV === 'production';
+const {servers} = require('../src/entries/config');
 
 module.exports = merge(base, {
   entry: servers,

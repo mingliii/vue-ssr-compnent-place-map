@@ -1,18 +1,3 @@
-const path = require('path');
-const serverPath = path.resolve(process.cwd(), 'src', 'entries', 'server');
-const clientPath = path.resolve(process.cwd(), 'src', 'entries', 'client');
-
-exports.servers = {
-  places: path.join(serverPath, 'places.js'),
-  place: path.join(serverPath, 'place.js'),
-  map: path.join(serverPath, 'map.js'),
-}
-
-exports.clients = {
-  places: path.join(clientPath, 'places.js'),
-  place: path.join(clientPath, 'place.js'),
-  map: path.join(clientPath, 'map.js'),
-}
 
 exports.createClientEntry = Component => {
   const {createApp} = require('../app')

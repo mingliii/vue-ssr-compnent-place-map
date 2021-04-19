@@ -5,8 +5,9 @@ const path = require('path');
 const proxy = require('express-http-proxy');
 const setupDevServer = require('../config/setup-dev-server');
 const port = 3000;
-const dev = process.env.NODE_ENV === 'development'
-const entries = Object.keys(require('./entries').servers)
+const dev = process.env.NODE_ENV === 'development';
+const components = Object.keys(require('./entries/config').servers);
+
 server.use('/graphql', proxy('https://www.nationaltrust.org.uk', {
   "proxyReqPathResolver"() {
     return '/apps/search/api/graphql';
@@ -27,7 +28,7 @@ const createRenderer = (bundle, options) =>
 const requestHandler = async (req, res, serverBundle) => {
   try {
     const component = req.path.substring(1);
-    if (!entries.includes(component)) {
+    if (!components.includes(component)) {
       return res.status(404).send('404 | Page Not Found');
     }
 

@@ -2,12 +2,12 @@
 <head>
     <!-- use double mustache for HTML-escaped interpolation -->
     <title>{{ title }}</title>
-    {{ {renderStyles() }}}
+    {{{ renderStyles() }}}
 </head>
 <body>
 <!--vue-ssr-outlet-->
-{{ {renderState({contextKey: '<!--contextKey-->', windowKey: '<!--windowKey-->'}) }}}
-{{ {renderScripts() }}}
+{{{ renderState({contextKey: '<!--contextKey-->', windowKey: '<!--windowKey-->'}) }}}
+{{{ renderScripts() }}}
 
 </body>
 </html>
