@@ -10,6 +10,7 @@ const dev = process.env.NODE_ENV === 'development';
 const components = Object.keys(require('./entries/config').servers);
 const port = 3000;
 const microCache = require('route-cache');
+const compression = require('compression');
 
 server.use('/graphql', proxy('https://www.nationaltrust.org.uk', {
   "proxyReqPathResolver"() {
@@ -68,6 +69,7 @@ if (dev) {
   });
 }
 
+server.use(compression({ threshold: 0 }))
 server.use('/public', express.static('dist'))
 server.get('*', microCache.cacheSeconds(100, req => req.originalUrl), (req, res) => {
   return requestHandler(req, res, bundle);
