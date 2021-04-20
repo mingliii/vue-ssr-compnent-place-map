@@ -30,6 +30,7 @@
     "graphql-tag": "^2.11.0",
     "lru-cache": "^6.0.0",
     "node-fetch": "^2.6.1",
+    "route-cache": "^0.4.5",
     "vue": "^2.6.12",
     "vue-apollo": "^3.0.7",
     "vue-server-renderer": "^2.6.12",

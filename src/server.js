@@ -9,10 +9,7 @@ const LRU = require("lru-cache");
 const dev = process.env.NODE_ENV === 'development';
 const components = Object.keys(require('./entries/config').servers);
 const port = 3000;
-const microCache = new LRU({
-  max: 10000,
-  maxAge: 10000 // Important: entries expires after 1 second.
-})
+const microCache = require('route-cache');
 
 server.use('/graphql', proxy('https://www.nationaltrust.org.uk', {
   "proxyReqPathResolver"() {
@@ -37,12 +34,6 @@ const createRenderer = (bundle, options) =>
 
 const requestHandler = async (req, res, serverBundle) => {
   try {
-
-    const hit = microCache.get(req.url)
-    if (hit) {
-      return res.end(hit)
-    }
-
     const component = req.path.substring(1);
     if (!components.includes(component)) {
       return res.status(404).send('404 | Page Not Found');
@@ -60,8 +51,7 @@ const requestHandler = async (req, res, serverBundle) => {
     clientManifest.initial = clientManifest.initial.filter(filename => filename.match(`^${component}(\\.[\\d\\w]+)?\\.js$`))
     const renderer = createRenderer(bundle, {template, clientManifest});
     const html = await renderer.renderToString(context);
-    res.end(html);
-    microCache.set(req.url, html)
+    res.send(html);
   } catch (error) {
     console.error(error)
     if (error.code === 404) {
@@ -79,7 +69,7 @@ if (dev) {
 }
 
 server.use('/public', express.static('dist'))
-server.get('*', (req, res) => {
+server.get('*', microCache.cacheSeconds(100, req => req.originalUrl), (req, res) => {
   return requestHandler(req, res, bundle);
 })
 
