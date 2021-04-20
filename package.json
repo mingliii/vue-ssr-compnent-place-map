@@ -12,7 +12,8 @@
     "build:dev": "cross-env NODE_ENV=development npm run build:client:dev && npm run build:server:dev",
     "build:prod": "cross-env NODE_ENV=production npm run build:client:prod && npm run build:server:prod",
     "server:dev": "cross-env NODE_ENV=development nodemon ./src/server.js",
-    "server:prod": "cross-env NODE_ENV=production node ./src/server.js"
+    "server:prod": "cross-env NODE_ENV=production node ./src/server.js",
+    "full:prod": "npm run build:prod && npm run server:prod"
   },
   "dependencies": {
     "@chakra-ui/vue": "^0.8.1",
