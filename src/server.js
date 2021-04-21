@@ -77,8 +77,12 @@ if (dev) {
   });
 }
 
+const resolve = file => path.resolve(__dirname, file)
+const serve = (path, cache) => express.static(resolve(path), {
+  maxAge: cache && !dev ? 1000 * 60 * 60 * 24 * 30 : 0
+})
+server.use('/public', serve('../dist', true))
 server.use(compression({threshold: 0}))
-server.use('/public', express.static('dist'))
 server.get('*', microCache.cacheSeconds(100, req => req.originalUrl), (req, res) => {
   return requestHandler(req, res, bundle);
 })
