@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :id="componentId">
         <h1>{{ name }}</h1>
         <div v-if="$apollo.loading">Loading...</div>
         <div v-else>
@@ -29,7 +29,9 @@ export default {
             numOfPlaces: 30
         }
     },
-
+    computed: {
+        componentId: function () {return `${this.$options.name.toLowerCase()}-component`},
+    },
     apollo: {
         places: {
             query: gql`{

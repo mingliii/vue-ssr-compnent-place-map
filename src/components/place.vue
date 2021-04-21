@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :id="componentId">
         <h1 class="about">{{ name }}</h1>
         <div>
             <card :place="places[Math.floor(Math.random() * places.length)]"/>
@@ -18,6 +18,7 @@ export default {
     },
     computed: {
         ...mapState(['places']),
+        componentId: function () {return `${this.$options.name.toLowerCase()}-component`},
     },
     data() {
         return {

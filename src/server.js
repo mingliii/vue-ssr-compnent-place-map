@@ -11,6 +11,7 @@ const components = Object.keys(require('./entries/config').servers);
 const port = 3000;
 const microCache = require('route-cache');
 const compression = require('compression');
+// const compiler = require('vue-template-compiler')
 
 server.use('/graphql', proxy('https://www.nationaltrust.org.uk', {
   "proxyReqPathResolver"() {
@@ -46,6 +47,7 @@ const requestHandler = async (req, res, serverBundle) => {
       title: 'vue ssr',
       mountSelectorId: `${component.replace(/-/g, "")}-component`
     }
+    // const parsed = compiler.parseComponent(fs.readFileSync(path.resolve(process.cwd(), 'src/components', `${component}.vue`), 'utf-8'));
     const bundle = {...serverBundle};
     let template = fs.readFileSync(path.resolve(process.cwd(), 'src', 'index.template.html'), 'utf-8');
 

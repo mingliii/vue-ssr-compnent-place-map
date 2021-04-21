@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 100%;height: 900px;position: relative">
+    <div :id="componentId" style="width: 100%;height: 900px;position: relative">
         <h1>{{ name }}</h1>
         <div>
             <GmapMap id="places-map" ref="mapRef"
@@ -32,6 +32,7 @@ export default {
     components: {},
     computed: {
         ...mapState(['places']),
+        componentId: function () {return `${this.$options.name.toLowerCase()}-component`},
     },
     data() {
         return {

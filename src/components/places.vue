@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :id="componentId">
         <h1>{{ name }}</h1>
         <div>
             <c-simple-grid minChildWidth="250px" spacing="30px">
@@ -24,6 +24,7 @@ export default {
     },
     computed: {
         ...mapState(['places']),
+        componentId: function () {return `${this.$options.name.toLowerCase()}-component`},
     },
     data() {
         return {
