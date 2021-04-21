@@ -5,8 +5,12 @@
     {{{ renderStyles() }}}
 </head>
 <body>
-<!--vue-ssr-outlet-->
+
+<div id="{{ mountSelectorId }}">
+    <!--vue-ssr-outlet-->
+</div>
 {{{ renderState({contextKey: '<!--contextKey-->', windowKey: '<!--windowKey-->'}) }}}
+{{{ renderState({ contextKey: 'apolloState', windowKey: '__APOLLO_STATE__' }) }}}
 {{{ renderScripts() }}}
 
 </body>

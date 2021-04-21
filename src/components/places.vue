@@ -1,5 +1,5 @@
 <template>
-    <div id="places-component">
+    <div>
         <h1>{{ name }}</h1>
         <div>
             <c-simple-grid minChildWidth="250px" spacing="30px">
@@ -41,7 +41,6 @@ export default {
     },
     methods: {
         loadMore() {
-            console.log('this.numOfPlaces', this.numOfPlaces)
             if (this.places.length > 30 + this.numOfPlaces) {
                 this.numOfPlaces = 30 + this.numOfPlaces;
             } else {

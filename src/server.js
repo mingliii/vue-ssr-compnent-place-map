@@ -40,13 +40,19 @@ const requestHandler = async (req, res, serverBundle) => {
       return res.status(404).send('404 | Page Not Found');
     }
 
-    const context = {url: req.url, title: 'vue ssr'}
+    const context = {
+      url: req.url,
+      ssr: true,
+      title: 'vue ssr',
+      mountSelectorId: `${component.replace(/-/g, "")}-component`
+    }
     const bundle = {...serverBundle};
     let template = fs.readFileSync(path.resolve(process.cwd(), 'src', 'index.template.html'), 'utf-8');
 
     bundle.entry = `${component}.js`
-    context.contextKey = `state.${component}`
-    template = template.replace("<!--contextKey-->", `state.${component}`).replace("<!--windowKey-->", `__${component.toUpperCase()}_INITIAL_STATE__`)
+    context.contextKey = `state.${component.replace(/-/g, "_")}`
+    template = template.replace("<!--contextKey-->", `state.${component.replace(/-/g, "_")}`)
+      .replace("<!--windowKey-->", `__${component.replace(/-/g, "_").toUpperCase()}_INITIAL_STATE__`)
 
     let clientManifest = {...require('../dist/vue-ssr-client-manifest.json')};
     clientManifest.initial = clientManifest.initial.filter(filename => filename.match(`^${component}(\\.[\\d\\w]+)?\\.js$`))
@@ -69,7 +75,7 @@ if (dev) {
   });
 }
 
-server.use(compression({ threshold: 0 }))
+server.use(compression({threshold: 0}))
 server.use('/public', express.static('dist'))
 server.get('*', microCache.cacheSeconds(100, req => req.originalUrl), (req, res) => {
   return requestHandler(req, res, bundle);

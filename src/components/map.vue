@@ -1,5 +1,5 @@
 <template>
-    <div id="map-component" style="width: 100%;height: 900px;position: relative">
+    <div style="width: 100%;height: 900px;position: relative">
         <h1>{{ name }}</h1>
         <div>
             <GmapMap id="places-map" ref="mapRef"

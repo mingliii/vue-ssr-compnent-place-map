@@ -1,13 +1,15 @@
 // store.js
 import Vue from 'vue'
 import Vuex from 'vuex'
-import graphqlClient from './apollo'
+import {createApolloClient} from './apollo'
 // Assume we have a universal API that returns Promises
 // and ignore the implementation details
 import {fetchItem} from './api'
 import gql from "graphql-tag";
 
 Vue.use(Vuex)
+
+const apolloClient = createApolloClient()
 
 export function createStore() {
   return new Vuex.Store({
@@ -27,7 +29,7 @@ export function createStore() {
         })
       },
       async fetchPlaces({commit}) {
-        const response = await graphqlClient.query({
+        const response = await apolloClient.query({
           query: gql`
               {
                   places: allPlaces {
