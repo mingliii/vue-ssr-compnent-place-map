@@ -11,7 +11,7 @@ Vue.use(VueApollo)
 Vue.use(Chakra)
 Vue.use(VueGoogleMaps, {
   load: {
-    key: 'AIzaSyDKIzOcpR-5CcJAWJjkEJWNz-_8W7lKsmY',
+    key: 'AIzaSyAREmv_v0qtSH8rfmqsBLFNRTmJ774nMy4',
     libraries: 'places',
   },
 })
